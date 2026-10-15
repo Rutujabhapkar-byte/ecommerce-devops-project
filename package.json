@@ -1,0 +1,8 @@
+{
+  "name": "shopeasy-ecommerce",
+  "version": "1.0.0",
+  "description": "E-commerce website for DevOps CI/CD project",
+  "scripts": {
+    "test": "node tests/website.test.js"
+  }
+}
