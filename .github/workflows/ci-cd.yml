@@ -9,8 +9,7 @@ on:
       - main
 
 jobs:
-  test:
-    name: Test E-commerce Website
+  test-and-push:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,8 +21,21 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Run automated tests
+      - name: Run website tests
         run: npm test
 
       - name: Build Docker image
-        run: docker build -t shopeasy-ecommerce .
+        run: docker build -t shopeasy:latest .
+
+      - name: Log in to Docker Hub
+        if: github.event_name == 'push'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Push image to Docker Hub
+        if: github.event_name == 'push'
+        run: |
+          docker tag shopeasy:latest bhapkar123/shopeasy:latest
+          docker push bhapkar123/shopeasy:latest
